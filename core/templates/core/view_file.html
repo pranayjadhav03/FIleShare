@@ -22,7 +22,6 @@
     {% endif %}
 
     {% if password_required %}
-    <!-- Password Form -->
     <form method="post" class="mt-6 space-y-4">
         {% csrf_token %}
         <label for="password" class="block font-semibold text-gray-800 dark:text-gray-100">Enter Password:</label>
@@ -36,13 +35,10 @@
     </form>
 
     {% elif password_verified or not file.password %}
-    <!-- Download Button -->
     <a href="{{ file.file.url }}" download
        class="block mt-6 text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded shadow transition">
         ⬇ Download File
     </a>
-
-    <!-- Delete Form -->
     <form method="POST" action="{% url 'delete_file' file.uuid %}" class="mt-4">
         {% csrf_token %}
         <button type="submit" 
