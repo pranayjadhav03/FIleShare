@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Confirm Delete{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">Are you sure you want to delete this file?</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Yes, Delete</button>
+        <a href="{% url 'view_file' file.uuid %}" class="ml-4 text-blue-500 hover:underline">Cancel</a>
+    </form>
+</div>
+{% endblock %}

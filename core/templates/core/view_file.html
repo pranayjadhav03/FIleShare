@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+{% block title %}File Details{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto mt-10 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md transition-all duration-300">
+    
+    <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white break-words">
+        {{ file.file.name|default:file.file }}
+    </h2>
+
+    <p class="text-gray-700 dark:text-gray-300 mb-1">
+        <strong class="font-medium text-gray-800 dark:text-gray-100">Uploaded:</strong> 
+        {{ file.uploaded_at|date:"F d, Y H:i" }}
+    </p>
+
+    {% if file.expiry %}
+    <p class="text-gray-700 dark:text-gray-300 mb-4">
+        <strong class="font-medium text-gray-800 dark:text-gray-100">Expires:</strong> 
+        {{ file.expiry|date:"F d, Y H:i" }}
+    </p>
+    {% endif %}
+
+    {% if password_required %}
+    <!-- Password Form -->
+    <form method="post" class="mt-6 space-y-4">
+        {% csrf_token %}
+        <label for="password" class="block font-semibold text-gray-800 dark:text-gray-100">Enter Password:</label>
+        <input type="password" name="password" id="password" required 
+               class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+
+        <button type="submit" 
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded shadow transition">
+            Submit
+        </button>
+    </form>
+
+    {% elif password_verified or not file.password %}
+    <!-- Download Button -->
+    <a href="{{ file.file.url }}" download
+       class="block mt-6 text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded shadow transition">
+        ⬇ Download File
+    </a>
+
+    <!-- Delete Form -->
+    <form method="POST" action="{% url 'delete_file' file.uuid %}" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" 
+                class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded shadow transition">
+            🗑️ Delete this File
+        </button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

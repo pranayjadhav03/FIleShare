@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}FileShare{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- TailwindCSS with Dark Mode enabled -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',  // Ensure dark mode is based on class
+      }
+    </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 min-h-screen flex flex-col text-gray-800 dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-900 dark:to-black dark:text-gray-100 transition-all duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 shadow-md sticky top-0 z-50 dark:bg-gray-800 dark:text-gray-200">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{% url 'home' %}" class="font-bold text-2xl hover:text-gray-300 transition">FileShare</a>
+
+            <!-- Dark Mode Toggle -->
+            <div class="flex items-center space-x-2">
+                <span class="text-sm">🌞</span>
+                
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="dark-toggle" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-500 dark:bg-gray-600 transition-colors"></div>
+                  <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform transform peer-checked:translate-x-5"></div>
+                </label>
+              
+                <span class="text-sm">🌙</span>
+              </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages using SweetAlert -->
+    {% if messages %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for message in messages %}
+                Swal.fire({
+                    icon: "{% if message.tags == 'error' %}error{% else %}success{% endif %}",
+                    title: "{{ message|escapejs }}",
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            {% endfor %}
+        });
+    </script>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-gray-600 py-6 mt-10 border-t text-sm dark:text-gray-400 dark:border-gray-700">
+        Made with ❤️ by FileShare Team © 2025
+    </footer>
+
+    <!-- Dark Mode Script -->
+    <script>
+        const toggleCheckbox = document.getElementById('dark-toggle');
+        const html = document.documentElement;
+    
+        // Apply stored theme on load
+        if (localStorage.getItem('theme') === 'dark') {
+            html.classList.add('dark');
+            toggleCheckbox.checked = true;
+        }
+    
+        toggleCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+    
+    
+</body>
+</html>

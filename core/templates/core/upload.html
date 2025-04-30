@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Upload File{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto mt-12 bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl transition-transform duration-500 hover:scale-105">
+    <h2 class="text-3xl font-extrabold mb-6 text-gray-900 dark:text-gray-50 text-center tracking-wide">
+        Upload Your File
+    </h2>
+
+    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6 text-center">
+        Securely upload your files with optional password protection and expiry settings.
+    </p>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="relative">
+            <label for="file" class="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Choose a file</label>
+            <input type="file" name="file" id="file" required 
+                   class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-500 transition">
+        </div>
+        
+        <div class="relative">
+            <label for="password" class="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Password (optional)</label>
+            <input type="text" name="password" id="password" placeholder="Enter a password" 
+                   class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-500 transition">
+        </div>
+        
+        <div class="relative">
+            <label for="expiry" class="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Expiry in hours (optional)</label>
+            <input type="number" name="expiry" id="expiry" placeholder="Enter expiry time" 
+                   class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-500 transition">
+        </div>
+        
+        <button type="submit" 
+                class="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-lg shadow-lg font-semibold text-lg tracking-wider transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Upload File
+        </button>
+
+        <div id="progressContainer" class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mt-4 hidden">
+            <div id="progressBar" class="h-4 bg-blue-500 rounded-full transition-all duration-500" style="width: 0%;"></div>
+        </div>
+
+        <p id="progressText" class="text-center mt-2 text-sm text-gray-600 dark:text-gray-300 hidden">
+            Upload Progress: <span class="font-bold">0%</span>
+        </p>
+    </form>
+</div>
+{% endblock %}

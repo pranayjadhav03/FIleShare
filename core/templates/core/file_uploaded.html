@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Upload Complete{% endblock %}
+
+{% block content %}
+<div class="text-center mt-12 max-w-xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md transition-all duration-300">
+    
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">✅ Upload Successful!</h1>
+    <p class="text-gray-700 dark:text-gray-300 mb-6">Here is your shareable link:</p>
+
+    <div class="relative">
+        <input id="shareableLink" type="text" readonly value="{{ shareable_link }}"
+               class="w-full p-3 pr-24 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm font-mono">
+        
+        <button onclick="copyLink()"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-md shadow transition">
+            📋 Copy
+        </button>
+    </div>
+
+    <a href="{{ shareable_link }}" target="_blank"
+       class="mt-8 inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition">
+        🔗 Open File Page
+    </a>
+</div>
+
+<script>
+function copyLink() {
+    const linkInput = document.getElementById('shareableLink');
+    navigator.clipboard.writeText(linkInput.value).then(() => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Link copied!',
+            text: 'You can now share it anywhere.',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }).catch(() => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops!',
+            text: 'Failed to copy the link.',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    });
+}
+</script>
+{% endblock %}
