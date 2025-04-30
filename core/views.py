@@ -41,12 +41,10 @@ def upload_file(request):
             expiry=expires_at
         )
 
-        # ✅ Generate the shareable link
         shareable_link = request.build_absolute_uri(
             reverse('view_file', args=[file.uuid])
         )
-
-        # ✅ Pass the shareable link to template
+        
         return render(request, 'core/file_uploaded.html', {'shareable_link': shareable_link})
 
     return render(request, 'core/upload.html')
@@ -65,12 +63,10 @@ def delete_file(request, file_uuid):
     file_obj = get_object_or_404(SharedFile, uuid=file_uuid)
 
     if request.method == "POST":
-        # Delete file from storage
         if file_obj.file:
             file_obj.file.delete(save=False)
-        # Delete database record
         file_obj.delete()
         messages.success(request, "File deleted successfully!")
-        return redirect('home')  # Go back to home after delete
+        return redirect('home') 
 
     return render(request, 'core/confirm_delete.html', {'file': file_obj})
